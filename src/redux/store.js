@@ -1,12 +1,8 @@
-// src/redux/store.js
-
-import {configureStore, combineReducers, applyMiddleware} from 'redux';
-import thunk from 'redux-thunk';
+import {configureStore, combineReducers} from '@reduxjs/toolkit';
 import cartReducer from './reducers/cartReducers';
 import productReducer from './reducers/productReducer';
 import userReducer from './reducers/userReducer';
 import orderReducer from './reducers/orderReducer';
-import {composeWithDevTools} from '@redux-devtools/extension';
 
 const rootReducer = combineReducers({
   cart: cartReducer,
@@ -15,11 +11,10 @@ const rootReducer = combineReducers({
   order: orderReducer,
 });
 
-const middleware = [thunk];
-
-const store = configureStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(...middleware)),
-);
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: getDefaultMiddleware => getDefaultMiddleware(),
+  devTools: process.env.NODE_ENV !== 'production',
+});
 
 export default store;
